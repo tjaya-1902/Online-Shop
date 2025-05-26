@@ -1,8 +1,7 @@
-Simple Shopping Cart with PHP
-============================
-1. Import "mysql_import.sql" in your MySql PhpMyAdmin to create product table.
-2. Change settings in "config.php" for database.
-3. Navigate to index page of your shopping cart and enjoy.
+Added online shop functions to shopping cart interface.
 
-@License : http://opensource.org/licenses/MIT
-@Tutorial : http://www.sanwebe.com/2013/06/creating-simple-shopping-cart-with-php
+Functions added so far:
+- User login system
+- Order confirmation
+- Invoice generation
+- See order list
