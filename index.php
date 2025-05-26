@@ -2,10 +2,16 @@
 session_start();
 include_once("config.php");
 
+#if (!isset($_SESSION['user_id'])) {
+#    header('Location: login.php');
+#    exit;
+#}
 
 //current URL of the Page. cart_update.php redirects back to this URL
 $current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 ?>
+
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -16,6 +22,25 @@ $current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_
 <body>
 
 <h1 align="center">Products </h1>
+
+<!-- LOGIN / LOGOUT BOX -->
+<div style="padding: 10px; text-align: center;">
+<?php if (!isset($_SESSION['user_id'])): ?>
+    <form method="post" action="login.php">
+        <input type="text" name="username" placeholder="Username" required />
+        <input type="password" name="password" placeholder="Password" required />
+        <input type="hidden" name="return_url" value="<?php echo $current_url; ?>" />
+        <button type="submit">Login</button>
+        <a href="register.php">Register</a>
+    </form>
+<?php else: ?>
+    <p>Logged in as: <strong><?php echo htmlspecialchars($_SESSION['username']); ?></strong></p>
+    <a href="my_orders.php" style="margin-right: 10px;">My Orders</a>
+    <a href="logout.php">Logout</a>
+<?php endif; ?>
+</div>
+
+
 
 <!-- View Cart Box Start -->
 <?php
@@ -51,7 +76,6 @@ if(isset($_SESSION["cart_products"]) && count($_SESSION["cart_products"])>0)
 	echo '</tbody>';
 	echo '</table>';
 	
-	$current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 	echo '<input type="hidden" name="return_url" value="'.$current_url.'" />';
 	echo '</form>';
 	echo '</div>';

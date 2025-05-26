@@ -1,12 +1,12 @@
 <?php
-$currency = '&#8377; '; //Currency Character or code
+$currency = '€'; //Currency Character or code
 
 $db_username = 'root';
 $db_password = '';
-$db_name = 'test';
+$db_name = 'online_shop';
 $db_host = 'localhost';
 
-$shipping_cost      = 1.50; //shipping cost
+$shipping_cost      = 5; //shipping cost
 $taxes              = array( //List your Taxes percent here.
                             'VAT' => 12, 
                             'Service Tax' => 5

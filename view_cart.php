@@ -1,5 +1,6 @@
 <?php
 session_start();
+
 include_once("config.php");
 ?>
 <!DOCTYPE html>
@@ -54,14 +55,65 @@ include_once("config.php");
 		$shipping_cost = ($shipping_cost)?'Shipping Cost : '.$currency. sprintf("%01.2f", $shipping_cost).'<br />':'';
 	}
     ?>
-    <tr><td colspan="5"><span style="float:right;text-align: right;"><?php echo $shipping_cost. $list_tax; ?>Amount Payable : <?php echo sprintf("%01.2f", $grand_total);?></span></td></tr>
-    <tr><td colspan="5"><a href="index.php" class="button">Add More Items</a><button type="submit">Update</button></td></tr>
+    <tr><td colspan="5"><span style="float:left;text-align: left;"><?php echo $shipping_cost. $list_tax; ?>Amount Payable : <?php echo sprintf("%01.2f", $grand_total);?></span></td></tr>
+    <tr>
+	<td colspan="5">
+		<div style="float: left;">
+		<a href="index.php" class="button">Add More Items</a>
+		<button type="submit">Update</button>
+		</div>
+	</td>
+	</tr>
   </tbody>
 </table>
+
 <input type="hidden" name="return_url" value="<?php 
 $current_url = urlencode($url="http://".$_SERVER['HTTP_HOST'].$_SERVER['REQUEST_URI']);
 echo $current_url; ?>" />
 </form>
+
+<?php if (isset($_SESSION["cart_products"]) && count($_SESSION["cart_products"]) > 0): ?>
+    <div style="margin-top: 20px;">
+        <form method="post" action="confirm_order.php" onsubmit="return validateAndConfirm();">
+            <h2>Shipping Address</h2>
+			<table>
+				<tr>
+					<td><label for="street_name">Street name:</label></td>
+					<td><input type="text" id="street_name" name="street_name" required></td>
+				</tr>
+				<tr>
+					<td><label for="street_number">Street number:</label></td>
+					<td><input type="text" id="street_number" name="street_number" required></td>
+				</tr>
+				<tr>
+					<td><label for="postal_code">Postal code:</label></td>
+					<td><input type="text" id="postal_code" name="postal_code" required></td>
+				</tr>
+				<tr>
+					<td><label for="city">City:</label></td>
+					<td><input type="text" id="city" name="city" required></td>
+				</tr>
+			</table>
+
+            <input type="submit" name="confirm_order" value="Confirm Order" />
+        </form>
+    </div>
+
+    <script>
+        function validateAndConfirm() {
+            const fields = ['street_name', 'street_number', 'postal_code', 'city'];
+            for (let id of fields) {
+                let val = document.getElementById(id).value.trim();
+                if (val === '') {
+                    alert("Please fill out all address fields.");
+                    return false;
+                }
+            }
+            return confirm("Are you sure you want to place this order?");
+        }
+    </script>
+<?php endif; ?>
+
 </div>
 
 </body>
